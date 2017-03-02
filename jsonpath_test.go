@@ -1,7 +1,7 @@
-package jpath_test
+package jsonpath_test
 
 import (
-	. "github.com/Shop2market/jpath"
+	. "github.com/cthulhu/jsonpath"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -1,4 +1,4 @@
-package jpath_test
+package jsonpath_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -9,5 +9,5 @@ import (
 
 func TestJpath(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Jpath Suite")
+	RunSpecs(t, "JSONpath Suite")
 }
