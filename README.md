@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cthulhu/jsonpath.svg?branch=master)](https://travis-ci.org/ccthulhu/jsonpath)  [![Goreport](https://goreportcard.com/badge/github.com/cthulhu/jsonpath)](https://goreportcard.com/badge/github.com/cthulhu/jsonpath) [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cthulhu/jsonpath/master/LICENSE)
+[![Build Status](https://travis-ci.org/cthulhu/jsonpath.svg?branch=master)](https://travis-ci.org/cthulhu/jsonpath)  [![Goreport](https://goreportcard.com/badge/github.com/cthulhu/jsonpath)](https://goreportcard.com/badge/github.com/cthulhu/jsonpath) [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cthulhu/jsonpath/master/LICENSE)
 
 
 # jsonpath - Json generation by dot notation
