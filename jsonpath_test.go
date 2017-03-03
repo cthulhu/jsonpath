@@ -1,6 +1,9 @@
 package jsonpath_test
 
 import (
+	"encoding/json"
+	"testing"
+
 	. "github.com/cthulhu/jsonpath"
 
 	. "github.com/onsi/ginkgo"
@@ -105,5 +108,30 @@ var _ = Describe("Jpath", func() {
 			Expect(actual).To(Equal([]byte(`[{"value":100.12}]`)))
 		})
 	})
-
 })
+
+func BenchmarkComplexJSONPathArray(b *testing.B) {
+	in := map[string]string{"price.value": "100.00", "price.currency": "EU", "shipping.0.country": "GB", "shipping.0.service": "Standart shipping", "shipping.0.price.value": "33", "shipping.0.price.curency": "GBP"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+func BenchmarkSimpleJSONPathArrayWithNum(b *testing.B) {
+	in := map[string]string{"0.value.num()": "100.12"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+
+func BenchmarkSimpleJSONPathSimple(b *testing.B) {
+	in := map[string]string{"value": "100.12"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+func BenchmarkJSONNative(b *testing.B) {
+	in := map[string]string{"0.value.num()": "100.12"}
+	for n := 0; n < b.N; n++ {
+		json.Marshal(in)
+	}
+}
