@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// Marshal returns the JSON encoding of keysAndValues.
+// Returns marshaled []byte and error in case if it can't be marshaled
 func Marshal(keysAndValues map[string]string) ([]byte, error) {
 	var result interface{}
 	for key, value := range keysAndValues {
