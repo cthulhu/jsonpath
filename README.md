@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cthulhu/jsonpath.svg?branch=master)](https://travis-ci.org/ccthulhu/jsonpath)
+[![Build Status](https://travis-ci.org/cthulhu/jsonpath.svg?branch=master)](https://travis-ci.org/ccthulhu/jsonpath)  [![Goreport](https://goreportcard.com/badge/github.com/cthulhu/jsonpath)](https://goreportcard.com/badge/github.com/cthulhu/jsonpath)
 
 # jsonpath - Json generation by dot notation
 
