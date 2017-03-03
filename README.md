@@ -35,7 +35,7 @@ go get github.com/cthulhu/jsonpath
 # Usage
 
     in := map[string]string{"0.value": "100.00"}
-    jsobBytes := jsonpath.Marshal()
+    jsobBytes := jsonpath.Marshal(in)
 
 For more examples check jsonpath_test.go file
 
