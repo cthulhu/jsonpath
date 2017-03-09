@@ -27,6 +27,13 @@ var _ = Describe("Jpath", func() {
 			Expect(actual).To(Equal([]byte(`{"price":{"value":"100.00"}}`)))
 		})
 	})
+	Context("Panic atack with number and dot", func() {
+		It("generates json skipping the wrong keys", func() {
+			in := map[string]string{"one": "1233", "2. subcategory": "booooom", "two": "2"}
+			_, err := Marshal(in)
+			Expect(err).To(HaveOccurred())
+		})
+	})
 	Context("Long embeddens key value", func() {
 		It("generates json", func() {
 			in := map[string]string{"price.value1.value2": "100.00"}

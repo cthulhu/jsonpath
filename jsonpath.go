@@ -2,6 +2,7 @@ package jsonpath
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -10,16 +11,20 @@ import (
 // Returns marshaled []byte and error in case if it can't be marshaled
 func Marshal(keysAndValues map[string]string) ([]byte, error) {
 	var result interface{}
+	var err error
 	for key, value := range keysAndValues {
-		buildEmbedded(&result, strings.Split(key, ".")[:], value)
+		if err = buildEmbedded(&result, strings.Split(key, ".")[:], value); err != nil {
+			return nil, err
+		}
 	}
 	return json.Marshal(result)
 }
 
-func buildEmbedded(result *interface{}, keys []string, value string) {
+func buildEmbedded(result *interface{}, keys []string, value string) error {
+	var err error
 	if len(keys) == 0 {
 		*result = value
-		return
+		return err
 	}
 	currentKey := keys[0]
 	currentKeyIndex, err := strconv.Atoi(currentKey)
@@ -27,7 +32,11 @@ func buildEmbedded(result *interface{}, keys []string, value string) {
 		if *result == nil {
 			*result = []interface{}{}
 		}
-		if len((*result).([]interface{})) < currentKeyIndex+1 {
+		currentResult, ok := (*result).([]interface{})
+		if !ok {
+			return fmt.Errorf("Wrong key dimension %v", keys)
+		}
+		if len(currentResult) < currentKeyIndex+1 {
 			for i := 0; i < currentKeyIndex+1; i++ {
 				if len((*result).([]interface{})) < i+1 {
 					a := (*result).([]interface{})
@@ -36,14 +45,18 @@ func buildEmbedded(result *interface{}, keys []string, value string) {
 			}
 		}
 		var nextLevelValue = (*result).([]interface{})[currentKeyIndex]
-		buildEmbedded(&nextLevelValue, keys[1:], value)
+		if err = buildEmbedded(&nextLevelValue, keys[1:], value); err != nil {
+			return err
+		}
 		(*result).([]interface{})[currentKeyIndex] = nextLevelValue
 	} else {
 		if *result == nil {
 			*result = map[string]interface{}{}
 		}
 		var nextLevelValue = (*result).(map[string]interface{})[currentKey]
-		buildEmbedded(&nextLevelValue, keys[1:], value)
+		if err = buildEmbedded(&nextLevelValue, keys[1:], value); err != nil {
+			return err
+		}
 		switch currentKey {
 		case "num()":
 			{
@@ -56,4 +69,5 @@ func buildEmbedded(result *interface{}, keys []string, value string) {
 			}
 		}
 	}
+	return err
 }
