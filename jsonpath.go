@@ -53,6 +53,10 @@ func buildEmbedded(result *interface{}, keys []string, value string) error {
 		if *result == nil {
 			*result = map[string]interface{}{}
 		}
+		_, ok := (*result).(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Wrong key dimension %v", keys)
+		}
 		var nextLevelValue = (*result).(map[string]interface{})[currentKey]
 		if err = buildEmbedded(&nextLevelValue, keys[1:], value); err != nil {
 			return err

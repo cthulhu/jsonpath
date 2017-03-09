@@ -28,8 +28,13 @@ var _ = Describe("Jpath", func() {
 		})
 	})
 	Context("Panic atack with number and dot", func() {
-		It("generates json skipping the wrong keys", func() {
+		It("generates json skipping the wrong keys - first hashes", func() {
 			in := map[string]string{"one": "1233", "2. subcategory": "booooom", "two": "2"}
+			_, err := Marshal(in)
+			Expect(err).To(HaveOccurred())
+		})
+		It("generates json skipping the wrong keys - first arrays", func() {
+			in := map[string]string{"2. subcategory": "booooom", "one": "1233", "two": "2"}
 			_, err := Marshal(in)
 			Expect(err).To(HaveOccurred())
 		})
