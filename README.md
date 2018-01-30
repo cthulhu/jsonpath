@@ -14,6 +14,7 @@ Supported syntaxes
 |{"value":"100"}  |  {"value":"100"}        |
 |{"value.1":"100"}|  {"value":[null, "100"]}|
 |{"v.0.k":"100"}  |  {"v":[{"k":100}]}      |
+|{"v.[]":"1,2,3"}  |  {"v":["1","2","3"]}      |
 
 # Benchmarks
 
@@ -23,10 +24,20 @@ Run benchmarks
 
 Results
 
+V0.0.1
+
     BenchmarkComplexJSONPathArray-8      	  100000	     13557 ns/op
     BenchmarkSimpleJSONPathArrayWithNum-8	  500000	      3237 ns/op
     BenchmarkSimpleJSONPathSimple-8      	 1000000	      1940 ns/op
     BenchmarkJSONNative-8                	 1000000	      1087 ns/op
+
+v0.0.2
+    BenchmarkComplexJSONPathArray-8             	  100000	     13248 ns/op
+    BenchmarkSimpleJSONPathArrayWithNum-8       	  500000	      2799 ns/op
+    BenchmarkSimpleJSONPathArrayInsideArray-8   	  500000	      3308 ns/op
+    BenchmarkSimpleJSONPathArrays-8             	  500000	      2830 ns/op
+    BenchmarkSimpleJSONPathSimple-8             	 1000000	      1722 ns/op
+    BenchmarkJSONNative-8                       	 1000000	      1014 ns/op
 
 # Installation
 
