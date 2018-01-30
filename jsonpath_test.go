@@ -95,31 +95,49 @@ var _ = Describe("Jpath", func() {
 			Expect(actual).To(Equal([]byte(`{"price":{"currency":"EU","value":"100.00"},"shipping":[{"country":"GB","price":{"curency":"GBP","value":"33"},"service":"Standart shipping"}]}`)))
 		})
 	})
-
-	Context("Simple embeddens key value", func() {
-		It("generates json", func() {
-			in := map[string]string{"0.value": "100.00"}
-			actual, err := Marshal(in)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(actual).To(Equal([]byte(`[{"value":"100.00"}]`)))
+	Context("Arrays", func() {
+		Context("key value", func() {
+			It("generates json", func() {
+				in := map[string]string{"0.value": "100.00"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":"100.00"}]`)))
+			})
+		})
+		Context("array key", func() {
+			It("generates array", func() {
+				in := map[string]string{"0.value.[]": "1,2,3,4"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":["1","2","3","4"]}]`)))
+			})
+		})
+		Context("key value with num", func() {
+			It("generates json", func() {
+				in := map[string]string{"0.value.num()": "100.00"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":100}]`)))
+			})
+		})
+		Context("key value with float", func() {
+			It("generates json", func() {
+				in := map[string]string{"0.value.num()": "100.12"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":100.12}]`)))
+			})
 		})
 	})
-	Context("Simple embeddens key value with num", func() {
-		It("generates json", func() {
-			in := map[string]string{"0.value.num()": "100.00"}
+	Measure("it should do something hard efficiently", func(b Benchmarker) {
+		runtime := b.Time("runtime", func() {
+			in := map[string]string{"price.value": "100.00", "price.currency": "EU", "shipping.0.country": "GB", "shipping.0.service": "Standart shipping", "shipping.0.price.value": "33", "shipping.0.price.curency": "GBP"}
 			actual, err := Marshal(in)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(actual).To(Equal([]byte(`[{"value":100}]`)))
+			Expect(actual).To(Equal([]byte(`{"price":{"currency":"EU","value":"100.00"},"shipping":[{"country":"GB","price":{"curency":"GBP","value":"33"},"service":"Standart shipping"}]}`)))
 		})
-	})
-	Context("Simple embeddens key value with float", func() {
-		It("generates json", func() {
-			in := map[string]string{"0.value.num()": "100.12"}
-			actual, err := Marshal(in)
-			Expect(err).NotTo(HaveOccurred())
-			Expect(actual).To(Equal([]byte(`[{"value":100.12}]`)))
-		})
-	})
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 0.2), "SomethingHard() shouldn't take too long.")
+	}, 10)
 })
 
 func BenchmarkComplexJSONPathArray(b *testing.B) {
@@ -130,6 +148,20 @@ func BenchmarkComplexJSONPathArray(b *testing.B) {
 }
 func BenchmarkSimpleJSONPathArrayWithNum(b *testing.B) {
 	in := map[string]string{"0.value.num()": "100.12"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+
+func BenchmarkSimpleJSONPathArrayInsideArray(b *testing.B) {
+	in := map[string]string{"0.value.[]": "1,2,3,4,5,6"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+
+func BenchmarkSimpleJSONPathArrays(b *testing.B) {
+	in := map[string]string{"value.[]": "1,2,3,4,5,6"}
 	for n := 0; n < b.N; n++ {
 		Marshal(in)
 	}

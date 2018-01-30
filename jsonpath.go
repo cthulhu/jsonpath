@@ -67,6 +67,11 @@ func buildEmbedded(result *interface{}, keys []string, value string) error {
 				strNextLevelValue := nextLevelValue.(string)
 				*result, _ = strconv.ParseFloat(strNextLevelValue, 64)
 			}
+		case "[]":
+			{
+				strNextLevelValue := nextLevelValue.(string)
+				*result = strings.Split(strNextLevelValue, ",")
+			}
 		default:
 			{
 				(*result).(map[string]interface{})[currentKey] = nextLevelValue
