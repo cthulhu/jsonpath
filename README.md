@@ -32,6 +32,7 @@ V0.0.1
     BenchmarkJSONNative-8                	 1000000	      1087 ns/op
 
 v0.0.2
+
     BenchmarkComplexJSONPathArray-8             	  100000	     13248 ns/op
     BenchmarkSimpleJSONPathArrayWithNum-8       	  500000	      2799 ns/op
     BenchmarkSimpleJSONPathArrayInsideArray-8   	  500000	      3308 ns/op
