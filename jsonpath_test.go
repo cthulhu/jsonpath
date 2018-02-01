@@ -128,6 +128,14 @@ var _ = Describe("Jpath", func() {
 				Expect(actual).To(Equal([]byte(`[{"value":100.12}]`)))
 			})
 		})
+		Context("key value with bool", func() {
+			It("generates json", func() {
+				in := map[string]string{"0.value.bool()": "true"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":true}]`)))
+			})
+		})
 	})
 	Measure("it should do something hard efficiently", func(b Benchmarker) {
 		runtime := b.Time("runtime", func() {
@@ -148,6 +156,12 @@ func BenchmarkComplexJSONPathArray(b *testing.B) {
 }
 func BenchmarkSimpleJSONPathArrayWithNum(b *testing.B) {
 	in := map[string]string{"0.value.num()": "100.12"}
+	for n := 0; n < b.N; n++ {
+		Marshal(in)
+	}
+}
+func BenchmarkSimpleJSONPathArrayWithBool(b *testing.B) {
+	in := map[string]string{"0.value.bool()": "true"}
 	for n := 0; n < b.N; n++ {
 		Marshal(in)
 	}

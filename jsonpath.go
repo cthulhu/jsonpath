@@ -67,6 +67,11 @@ func buildEmbedded(result *interface{}, keys []string, value string) error {
 				strNextLevelValue := nextLevelValue.(string)
 				*result, _ = strconv.ParseFloat(strNextLevelValue, 64)
 			}
+		case "bool()":
+			{
+				strNextLevelValue := nextLevelValue.(string)
+				*result = (strNextLevelValue == "true")
+			}
 		case "[]":
 			{
 				strNextLevelValue := nextLevelValue.(string)

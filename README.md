@@ -7,6 +7,8 @@ This library is very close to [mongodb's dot notation](https://docs.mongodb.com/
 
 Supported syntaxes
 
+Standard dot notation
+
 |input hash value | output json result      |
 |-----------------|-------------------------|
 |{"0.value":"100"}| [{"value":"100"}]       |
@@ -14,7 +16,14 @@ Supported syntaxes
 |{"value":"100"}  |  {"value":"100"}        |
 |{"value.1":"100"}|  {"value":[null, "100"]}|
 |{"v.0.k":"100"}  |  {"v":[{"k":100}]}      |
-|{"v.[]":"1,2,3"}  |  {"v":["1","2","3"]}      |
+
+Extended
+
+|input hash value | output json result      |
+|-----------------|-------------------------|
+|{"v.num()":"1.0"}  |  {"v":1.0}      |
+|{"v.bool()":"true"}  |  {"v":true}      |
+
 
 # Benchmarks
 
@@ -24,21 +33,15 @@ Run benchmarks
 
 Results
 
-V0.0.1
+v0.0.3
 
-    BenchmarkComplexJSONPathArray-8      	  100000	     13557 ns/op
-    BenchmarkSimpleJSONPathArrayWithNum-8	  500000	      3237 ns/op
-    BenchmarkSimpleJSONPathSimple-8      	 1000000	      1940 ns/op
-    BenchmarkJSONNative-8                	 1000000	      1087 ns/op
-
-v0.0.2
-
-    BenchmarkComplexJSONPathArray-8             	  100000	     13248 ns/op
-    BenchmarkSimpleJSONPathArrayWithNum-8       	  500000	      2799 ns/op
-    BenchmarkSimpleJSONPathArrayInsideArray-8   	  500000	      3308 ns/op
-    BenchmarkSimpleJSONPathArrays-8             	  500000	      2830 ns/op
-    BenchmarkSimpleJSONPathSimple-8             	 1000000	      1722 ns/op
-    BenchmarkJSONNative-8                       	 1000000	      1014 ns/op
+    BenchmarkComplexJSONPathArray-8             	  100000	     12480 ns/op
+    BenchmarkSimpleJSONPathArrayWithNum-8       	  500000	      2654 ns/op
+    BenchmarkSimpleJSONPathArrayWithBool-8      	 1000000	      2319 ns/op
+    BenchmarkSimpleJSONPathArrayInsideArray-8   	  500000	      3066 ns/op
+    BenchmarkSimpleJSONPathArrays-8             	  500000	      2636 ns/op
+    BenchmarkSimpleJSONPathSimple-8             	 1000000	      1626 ns/op
+    BenchmarkJSONNative-8                       	 2000000	       959 ns/op
 
 # Installation
 
