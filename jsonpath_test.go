@@ -129,11 +129,29 @@ var _ = Describe("Jpath", func() {
 			})
 		})
 		Context("key value with bool", func() {
-			It("generates json", func() {
+			It("generates json for true", func() {
 				in := map[string]string{"0.value.bool()": "true"}
 				actual, err := Marshal(in)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(actual).To(Equal([]byte(`[{"value":true}]`)))
+			})
+			It("generates json for false", func() {
+				in := map[string]string{"0.value.bool()": "false"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":false}]`)))
+			})
+			It("generates json for empty", func() {
+				in := map[string]string{"0.value.bool()": ""}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":false}]`)))
+			})
+			It("generates json for not bool value", func() {
+				in := map[string]string{"0.value.bool()": "1234"}
+				actual, err := Marshal(in)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(actual).To(Equal([]byte(`[{"value":false}]`)))
 			})
 		})
 	})
