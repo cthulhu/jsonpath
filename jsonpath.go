@@ -34,7 +34,7 @@ func buildEmbedded(result *interface{}, keys []string, value string) error {
 		}
 		currentResult, ok := (*result).([]interface{})
 		if !ok {
-			return fmt.Errorf("Wrong key dimension %v", keys)
+			return fmt.Errorf("wrong key dimension %v", keys)
 		}
 		if len(currentResult) < currentKeyIndex+1 {
 			for i := 0; i < currentKeyIndex+1; i++ {
@@ -55,7 +55,7 @@ func buildEmbedded(result *interface{}, keys []string, value string) error {
 		}
 		_, ok := (*result).(map[string]interface{})
 		if !ok {
-			return fmt.Errorf("Wrong key dimension %v", keys)
+			return fmt.Errorf("wrong key dimension %v", keys)
 		}
 		var nextLevelValue = (*result).(map[string]interface{})[currentKey]
 		if err = buildEmbedded(&nextLevelValue, keys[1:], value); err != nil {
