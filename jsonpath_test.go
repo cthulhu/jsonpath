@@ -3,11 +3,13 @@ package jsonpath_test
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	. "github.com/cthulhu/jsonpath"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gmeasure"
 )
 
 var _ = Describe("Jpath", func() {
@@ -155,15 +157,19 @@ var _ = Describe("Jpath", func() {
 			})
 		})
 	})
-	Measure("it should do something hard efficiently", func(b Benchmarker) {
-		runtime := b.Time("runtime", func() {
+	It("should do something hard efficiently", func() {
+		experiment := gmeasure.NewExperiment("end-to-end web-server performance")
+		AddReportEntry(experiment.Name, experiment)
+
+		experiment.MeasureDuration("runtime", func() {
 			in := map[string]string{"price.value": "100.00", "price.currency": "EU", "shipping.0.country": "GB", "shipping.0.service": "Standart shipping", "shipping.0.price.value": "33", "shipping.0.price.curency": "GBP"}
 			actual, err := Marshal(in)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(actual).To(Equal([]byte(`{"price":{"currency":"EU","value":"100.00"},"shipping":[{"country":"GB","price":{"curency":"GBP","value":"33"},"service":"Standart shipping"}]}`)))
 		})
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 0.2), "SomethingHard() shouldn't take too long.")
-	}, 10)
+		Expect(experiment.GetStats("runtime").DurationFor(gmeasure.StatMedian)).To(BeNumerically("<", 1*time.Millisecond))
+
+	})
 })
 
 func BenchmarkComplexJSONPathArray(b *testing.B) {
