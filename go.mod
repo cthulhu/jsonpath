@@ -3,7 +3,7 @@ module github.com/cthulhu/jsonpath
 go 1.19
 
 require (
-	github.com/onsi/ginkgo/v2 v2.16.0
+	github.com/onsi/ginkgo/v2 v2.17.1
 	github.com/onsi/gomega v1.31.1
 )
 
